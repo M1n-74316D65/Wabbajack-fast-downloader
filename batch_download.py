@@ -1,34 +1,26 @@
-import json
+import webbrowser
 
-# Read the JSON file
-with open('modlist', 'r') as file:
-    json_data = file.read()
+# Read the links from the text file
+with open('output.txt', 'r') as file:
+    links = [line.strip() for line in file.readlines()]
 
-# Parse the JSON data
-try:
-    data = json.loads(json_data)
-except json.JSONDecodeError as e:
-    print(f"Error: Failed to decode JSON - {str(e)}")
-    exit()
+# Open links in batches of 20
+batch_size = 20
+current_batch = 0
+total_links = len(links)
 
-# Create a list to store the generated URLs
-urls = []
+while current_batch < total_links:
+    # Determine the range of links to open in this batch
+    start_index = current_batch
+    end_index = min(current_batch + batch_size, total_links)
+    batch_links = links[start_index:end_index]
 
-# Process each entry and create URLs
-entries = data["Archives"]
-for entry in entries:
-    try:
-        mod_id = entry['State']['ModID']
-        file_id = entry['State']['FileID']
-        url = f"https://www.nexusmods.com/fallout4/mods/{mod_id}?tab=files&file_id={file_id}"
-        urls.append(url)
-        print(url)
-    except TypeError:
-        print("Error: Invalid entry format - skipping entry")
-    except KeyError:
-        print("Error: Missing required keys in entry - skipping entry")
+    # Open each link in the batch
+    for link in batch_links:
+        webbrowser.open(link)
 
-# Write the URLs to an output file
-with open('output.txt', 'w') as file:
-    for url in urls:
-        file.write(url + '\n')
+    # Wait for keyboard input before opening the next batch
+    input("Press Enter to continue to the next batch...")
+
+    # Move to the next batch
+    current_batch += batch_size
