@@ -39,17 +39,7 @@ The tool operates in two main steps:
 
 4. **Extract Modlist Data**:
 
-   Run the modlist extraction script to generate download links:
-
-   ```bash
-   python extract_modlist.py
-   ```
-
-   This will create an '**output.txt**' file containing the generated download links.
-
-5. **Batch Download**:
-
-   - Open the 'batch_download.py' script in a text editor.
+   - Open the 'extract_modlist.py' script in a text editor.
    - Locate the following line:
      ```python
      url = f"https://www.nexusmods.com/fallout4/mods/{mod_id}?tab=files&file_id={file_id}"
@@ -61,6 +51,17 @@ The tool operates in two main steps:
      ```
 
    - Save the script.
+
+   Run the modlist extraction script to generate download links:
+
+   ```bash
+   python extract_modlist.py
+   ```
+
+   This will create an '**output.txt**' file containing the generated download links.
+
+5. **Batch Download**:
+
    - Run the batch download script to start downloading mods in batches:=
      ```bash
      python batch_download.py
