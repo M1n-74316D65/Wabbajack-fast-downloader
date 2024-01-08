@@ -27,7 +27,7 @@ The tool operates in two main steps:
    Clone or download this repository to your local machine:
 
    ```bash
-   git clone https://github.com/M1n-4d316e/Wabbajack-fast-downloader.git
+   git clone https://github.com/M1n-74316D65/Wabbajack-fast-downloader.git
 
    ```
 
