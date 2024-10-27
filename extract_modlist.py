@@ -20,7 +20,8 @@ for entry in entries:
     try:
         mod_id = entry['State']['ModID']
         file_id = entry['State']['FileID']
-        url = f"https://www.nexusmods.com/fallout4/mods/{mod_id}?tab=files&file_id={file_id}"
+        game_name = entry['State']['GameName'].lower()
+        url = f"https://www.nexusmods.com/{game_name}/mods/{mod_id}?tab=files&file_id={file_id}"
         urls.append(url)
         print(url)
     except TypeError:
