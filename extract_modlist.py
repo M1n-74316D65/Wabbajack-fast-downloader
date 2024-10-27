@@ -1,35 +1,54 @@
 import json
 
-# Read the JSON file
-with open('modlist', 'r') as file:
-    json_data = file.read()
+def read_json_file(file_path):
+    """Read and return the content of a JSON file."""
+    try:
+        print(f"Reading JSON file from {file_path}...")
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+        print("Successfully read JSON file.")
+        return data
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Error: File not found - {file_path}")
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Error: Failed to decode JSON - {str(e)}")
 
-# Parse the JSON data
-try:
-    data = json.loads(json_data)
-except json.JSONDecodeError as e:
-    print(f"Error: Failed to decode JSON - {str(e)}")
-    exit()
-
-# Create a list to store the generated URLs
-urls = []
-
-# Process each entry and create URLs
-entries = data["Archives"]
-for entry in entries:
+def generate_url(entry):
+    """Generate a URL from a given entry."""
     try:
         mod_id = entry['State']['ModID']
         file_id = entry['State']['FileID']
         game_name = entry['State']['GameName'].lower()
-        url = f"https://www.nexusmods.com/{game_name}/mods/{mod_id}?tab=files&file_id={file_id}"
-        urls.append(url)
-        print(url)
-    except TypeError:
-        print("Error: Invalid entry format - skipping entry")
-    except KeyError:
-        print("Error: Missing required keys in entry - skipping entry")
+        return f"https://www.nexusmods.com/{game_name}/mods/{mod_id}?tab=files&file_id={file_id}"
+    except (TypeError, KeyError) as e:
+        print(f"Error: {str(e)} - skipping entry")
+        return None
 
-# Write the URLs to an output file
-with open('output.txt', 'w') as file:
-    for url in urls:
-        file.write(url + '\n')
+def write_urls_to_file(urls, output_file):
+    """Write a list of URLs to an output file."""
+    print(f"Writing URLs to {output_file}...")
+    with open(output_file, 'w') as file:
+        file.write('\n'.join(urls) + '\n')
+    print("Successfully wrote URLs to file.")
+
+def main():
+    json_file_path = 'modlist'
+    output_file_path = 'output.txt'
+
+    # Read and parse the JSON file
+    try:
+        data = read_json_file(json_file_path)
+    except (FileNotFoundError, ValueError) as e:
+        print(e)
+        return
+
+    # Process each entry and create URLs
+    print("Generating URLs from JSON data...")
+    urls = [url for entry in data.get("Archives", []) if (url := generate_url(entry))]
+    print(f"Generated {len(urls)} URLs.")
+
+    # Write the URLs to an output file
+    write_urls_to_file(urls, output_file_path)
+
+if __name__ == "__main__":
+    main()
