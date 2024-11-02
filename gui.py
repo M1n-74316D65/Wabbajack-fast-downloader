@@ -91,7 +91,7 @@ def download_links():
         return
     batch_links = get_batch()
     for link in batch_links:
-        webbrowser.open(link)
+        #webbrowser.open(link)
         processed_links.set(processed_links.get() + 1)
     update_progress_bar_value()
     console.print(f"Opened {processed_links.get()} out of {links_amount} URLs.")
@@ -184,13 +184,15 @@ console.place(y=150, relwidth=1)
 file_path_entrybox = tk.Entry(root, font=50, width=35)
 file_path_entrybox.place(x=10, y=32)
 
-import_instruction = tk.Label(root, text="Select a Wabbajack mod list file, then click Import", font=40)
-import_instruction.place(x=10, y=5)
+
 
 select_wabbajack_file_button = tk.Button(root, text="Select", font=40, command=browse_file)
 select_wabbajack_file_button.place(x=340, y=28)
 import_btn = tk.Button(root, text="Extract", font=40, command=extract_file)
 import_btn.place(x=410, y=28)
+
+import_instruction = tk.Label(root, text=f"Select a Wabbajack mod list file, then click {import_btn.cget('text')}", font=40)
+import_instruction.place(x=10, y=5)
 
 s = ttk.Style(root)
 s.layout('text.Horizontal.TProgressbar',
