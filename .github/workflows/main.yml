@@ -50,5 +50,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/gui.exe
-          asset_name: Wabbajack-downloader-windows-${{ github.event.repository.tag_name }}.exe
+          asset_name: Wabbajack-downloader-windows-${{ github.ref_name }}.exe
           asset_content_type: application/octet-stream
