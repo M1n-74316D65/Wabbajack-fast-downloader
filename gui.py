@@ -164,8 +164,8 @@ def extract_url(modlist_file):
 
     console.print(f"Writing URLs to {output_file_path}...")
     write_urls_to_file(urls, output_file_path)
-    import_links()
     console.print("Successfully wrote URLs to file.")
+    import_links()
 
 
 root = tk.Tk()
