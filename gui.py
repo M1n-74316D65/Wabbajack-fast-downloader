@@ -52,13 +52,6 @@ def update_progress_bar_value():
 
 
 def import_links():
-    """
-    Imports URLs from the 'output.txt' file and initializes the download process.
-
-    This function reads URLs from 'output.txt' using a batch process. The progress bar
-    is updated based on the total number of URLs. If the file is successfully read,
-    the console will display the total number of URLs imported.
-    """
     global links_amount
     global processed_links
     global generator
@@ -66,6 +59,9 @@ def import_links():
     try:
         console.print("Importing URLs from output.txt file...")
         links_amount = batch_download.count_lines(output_file_path)
+        if links_amount == 0:
+            console.print("No URLs found in output.txt file.")
+            return
         generator = batch_download.read_links_in_batches(output_file_path, 20)
         progress['maximum'] = links_amount
         update_progress_bar_value()
@@ -117,8 +113,9 @@ def browse_file():
     file path entry box with the selected file's path.
     """
     filename = filedialog.askopenfilename(filetypes=[("Wabbajack mod list file", "*.wabbajack")])
-    file_path_entrybox.delete(0, tk.END)
-    file_path_entrybox.insert(tk.END, filename)  # add this
+    if filename != "":
+        file_path_entrybox.delete(0, tk.END)
+        file_path_entrybox.insert(tk.END, filename)
 
 
 def extract_file():
@@ -167,6 +164,7 @@ def extract_url(modlist_file):
 
     console.print(f"Writing URLs to {output_file_path}...")
     write_urls_to_file(urls, output_file_path)
+    import_links()
     console.print("Successfully wrote URLs to file.")
 
 
@@ -207,10 +205,11 @@ progress = ttk.Progressbar(root, orient=tk.HORIZONTAL, style='text.Horizontal.TP
                            maximum=links_amount, variable=processed_links)
 progress.place(x=10, y=120)
 
-import_links_button = tk.Button(root, text="Import Links from output.txt file", font=40, command=import_links)
-import_links_button.place(x=10, y=80)
-
 download_batch_button = tk.Button(root, text="Download batch", font=40, command=download_links)
-download_batch_button.place(x=250, y=80)
+download_batch_button.place(x=180, y=80)
+
+if os.path.exists(output_file_path):
+    console.print(f"Found output.txt file.")
+    import_links()
 
 root.mainloop()
