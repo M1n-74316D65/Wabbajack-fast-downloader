@@ -22,6 +22,7 @@ jobs:
           nuitka-version: 'main'
           script-name: gui.py
           onefile: 'true'
+          enable-plugins: 'tk-inter'
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -34,8 +35,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          release_name: ${{ github.event.head_commit.message }}
+          tag_name: ${{ github.ref_name }}
+          release_name: ${{ github.ref_name }}
           body: |
             ${{ github.event.head_commit.message }}
           draft: false
