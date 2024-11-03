@@ -4,9 +4,14 @@
 
 > **Project Origin:** This project was inspired by the need for a faster mod downloading process for Wabbajack-generated modlists, originating from [this GitHub issue](https://github.com/parsiad/nexus-autodl/issues/17).
 
+## How It Works
+
+1. **Modlist Extraction:** Parses the JSON modlist file to extract mod IDs and file IDs, generating download links for each mod on Nexus Mods.
+2. **Batch Download:** Opens the generated download links in batches using the `webbrowser` module to bypass download limits and speed up the process.
+
 ## Executable Usage
 
-1. Download the executable from [here](https://github.com/DassaultMirage2K/Wabbajack-fast-downloader-GUI/releases)
+1. Download the executable from [here](https://github.com/M1n-74316D65/Wabbajack-fast-downloader/releases)
 
 2. Run the executable
 
@@ -15,11 +20,6 @@
 4. Click 'Extract'
 
 5. Click 'Batch Download' to download links in batches
-
-## How It Works
-
-1. **Modlist Extraction:** Parses the JSON modlist file to extract mod IDs and file IDs, generating download links for each mod on Nexus Mods.
-2. **Batch Download:** Opens the generated download links in batches using the `webbrowser` module to bypass download limits and speed up the process.
 
 ## Requirements
 
