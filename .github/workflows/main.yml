@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*.*.*'
 
+env:
+  FILE_NAME: Wabbajack-downloader-windows-${{ github.ref_name }}
+
 jobs:
   build-windows:
     runs-on: windows-latest
@@ -24,7 +27,7 @@ jobs:
           onefile: 'true'
           enable-plugins: 'tk-inter'
           windows-console-mode: 'disable'
-          output-file: Wabbajack-downloader-windows-${{ github.ref_name }}.exe
+          output-file: $FILE_NAME.exe
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -33,4 +36,4 @@ jobs:
             ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
-          files: Wabbajack-downloader-windows-${{ github.ref_name }}.exe
+          files: build/$FILE_NAME.exe
