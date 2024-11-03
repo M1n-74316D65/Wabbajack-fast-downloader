@@ -14,7 +14,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: '3.12'
           architecture: 'x64'
       - name: Build with Nuitka
         uses: Nuitka/Nuitka-Action@main
@@ -24,31 +24,13 @@ jobs:
           onefile: 'true'
           enable-plugins: 'tk-inter'
           windows-console-mode: 'disable'
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-latest Build
-          path: | 
-            build/*.exe
+          output-file: Wabbajack-downloader-windows-${{ github.ref_name }}.exe
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: ${{ github.ref_name }}
           body: |
             ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/gui.exe
-          asset_name: Wabbajack-downloader-windows-${{ github.ref_name }}.exe
-          asset_content_type: application/octet-stream
+          files: Wabbajack-downloader-windows-${{ github.ref_name }}.exe
