@@ -70,3 +70,41 @@ This project was inspired by the need for a faster mod downloading process for W
 ## Disclaimer
 
 This tool is intended for personal use and should be used responsibly. Respect the terms and conditions of the mod authors and Nexus Mods. Use this tool at your own risk.
+
+## ✨ Contributors
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/M1n-74316D65">
+          <img src="https://avatars.githubusercontent.com/M1n-74316D65" width="100px;" alt="M1n-74316D65"/>
+          <br />
+          <sub><b>M1n-74316D65</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/M1n-74316D65/Wabbajack-fast-downloader/commits?author=M1n-74316D65" title="Code">💻</a>
+        <a href="https://github.com/M1n-74316D65/Wabbajack-fast-downloader/commits?author=M1n-74316D65" title="Documentation">📖</a>
+      </td>
+      <td align="center" valign="top" width="14.28%">
+        <a href="https://github.com/DassaultMirage2K">
+          <img src="https://avatars.githubusercontent.com/DassaultMirage2K" width="100px;" alt="DassaultMirage2K"/>
+          <br />
+          <sub><b>DassaultMirage2K</b></sub>
+        </a>
+        <br />
+        <a href="https://github.com/M1n-74316D65/Wabbajack-fast-downloader/commits?author=DassaultMirage2K" title="Code">💻</a>
+        <a href="https://github.com/M1n-74316D65/Wabbajack-fast-downloader/commits?author=DassaultMirage2K" title="Documentation">📖</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+*This project follows the [all-contributors](https://allcontributors.org) specification*
