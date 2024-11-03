@@ -27,7 +27,7 @@ jobs:
           onefile: 'true'
           enable-plugins: 'tk-inter'
           windows-console-mode: 'disable'
-          output-file: $FILE_NAME.exe
+          output-file: ${{ env.FILE_NAME }}.exe
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v2
@@ -36,4 +36,4 @@ jobs:
             ${{ github.event.head_commit.message }}
           draft: false
           prerelease: false
-          files: build/$FILE_NAME.exe
+          files: build/${{ env.FILE_NAME }}.exe
