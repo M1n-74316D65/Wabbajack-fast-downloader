@@ -1,0 +1,39 @@
+name: Build Workflow
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  FILE_NAME: Wabbajack-downloader-windows-${{ github.ref_name }}
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+      - name: Build with Nuitka
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          nuitka-version: 'main'
+          script-name: gui.py
+          onefile: 'true'
+          enable-plugins: 'tk-inter'
+          windows-console-mode: 'disable'
+          output-file: ${{ env.FILE_NAME }}.exe
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: |
+            ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
+          files: build/${{ env.FILE_NAME }}.exe
