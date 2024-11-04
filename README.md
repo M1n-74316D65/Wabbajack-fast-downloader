@@ -9,7 +9,14 @@
 1. **Modlist Extraction:** Parses the JSON modlist file to extract mod IDs and file IDs, generating download links for each mod on Nexus Mods.
 2. **Batch Download:** Opens the generated download links in batches using the `webbrowser` module to bypass download limits and speed up the process.
 
-## Executable Usage
+
+## Requirements
+
+- [Python 3.x](https://www.python.org)
+- [Tampermonkey](https://www.tampermonkey.net)
+- [Tampermonkey plugin to remove Nexus Mods wait time](https://greasyfork.org/en/scripts/394039-nexus-no-wait)
+
+## Executable Usage | GUI Usage
 
 1. Download the executable from [here](https://github.com/M1n-74316D65/Wabbajack-fast-downloader/releases)
 
@@ -21,13 +28,7 @@
 
 5. Click 'Batch Download' to download links in batches
 
-## Requirements
-
-- [Python 3.x](https://www.python.org)
-- [Tampermonkey](https://www.tampermonkey.net)
-- [Tampermonkey plugin to remove Nexus Mods wait time](https://greasyfork.org/en/scripts/394039-nexus-no-wait)
-
-## Usage
+## Terminal Usage | CLI Usage
 
 1. **Clone or Download Repository:**
 
