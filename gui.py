@@ -169,46 +169,78 @@ def extract_url(modlist_file):
 
 
 root = tk.Tk()
-root.title('Wabbajack URL Exporter')
-root.geometry('500x500')
-root.resizable(height=False, width=False)
+root.title('Wabbajack Fast Downloader')
+root.geometry('450x500')  # Reduced width from 600 to 450
+root.resizable(True, True)
 
+# Define global variables
 output_file_path = 'output.txt'
 links_amount = 0
 processed_links = tk.IntVar()
 generator = None
 
-console = TextScrollCombo(root, width=500, height=350)
-console.place(y=150, relwidth=1)
+# Create main container with padding
+main_container = ttk.Frame(root, padding="5")  # Reduced padding from 10
+main_container.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+root.grid_columnconfigure(0, weight=1)
+root.grid_rowconfigure(0, weight=1)
 
-file_path_entrybox = tk.Entry(root, font=50, width=35)
-file_path_entrybox.place(x=10, y=32)
+# File selection frame
+file_frame = ttk.LabelFrame(main_container, text="Mod List Selection", padding="3")  # Reduced padding
+file_frame.grid(row=0, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 5))  # Reduced padding
+file_frame.grid_columnconfigure(0, weight=1)
 
+file_path_entrybox = ttk.Entry(file_frame, font=('Arial', 9))  # Reduced font size
+file_path_entrybox.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=(5, 5))
 
+select_wabbajack_file_button = ttk.Button(file_frame, text="Browse", command=browse_file)
+select_wabbajack_file_button.grid(row=0, column=1, padx=5)
 
-select_wabbajack_file_button = tk.Button(root, text="Select", font=40, command=browse_file)
-select_wabbajack_file_button.place(x=340, y=28)
-import_btn = tk.Button(root, text="Extract", font=40, command=extract_file)
-import_btn.place(x=410, y=28)
+import_btn = ttk.Button(file_frame, text="Extract", command=extract_file)
+import_btn.grid(row=0, column=2, padx=5)
 
-import_instruction = tk.Label(root, text=f"Select a Wabbajack mod list file, then click {import_btn.cget('text')}", font=40)
-import_instruction.place(x=10, y=5)
+# Progress frame
+progress_frame = ttk.LabelFrame(main_container, text="Download Progress", padding="3")  # Reduced padding
+progress_frame.grid(row=1, column=0, columnspan=2, sticky=(tk.W, tk.E), pady=(0, 5))  # Reduced padding
+progress_frame.grid_columnconfigure(0, weight=1)
 
 s = ttk.Style(root)
 s.layout('text.Horizontal.TProgressbar',
          [('Horizontal.Progressbar.trough',
            {'children': [('Horizontal.Progressbar.pbar',
-                          {'side': 'left', 'sticky': 'ns'})],
+                         {'side': 'left', 'sticky': 'ns'})],
             'sticky': 'nswe'}),
           ('Horizontal.Progressbar.label', {'sticky': 'nswe'})])
-s.configure('text.Horizontal.TProgressbar', text='0/0', anchor='center', )
+s.configure('text.Horizontal.TProgressbar', text='0/0', anchor='center')
 
-progress = ttk.Progressbar(root, orient=tk.HORIZONTAL, style='text.Horizontal.TProgressbar', length=450,
-                           maximum=links_amount, variable=processed_links)
-progress.place(x=10, y=120)
+progress = ttk.Progressbar(
+    progress_frame, 
+    orient=tk.HORIZONTAL, 
+    style='text.Horizontal.TProgressbar',
+    length=150,  # Reduced from 200
+    maximum=links_amount, 
+    variable=processed_links
+)
+progress.grid(row=0, column=0, sticky=(tk.W, tk.E), padx=5, pady=5)
 
-download_batch_button = tk.Button(root, text="Download batch", font=40, command=download_links)
-download_batch_button.place(x=180, y=80)
+download_batch_button = ttk.Button(
+    progress_frame, 
+    text="Download Batch", 
+    command=download_links
+)
+download_batch_button.grid(row=1, column=0, pady=5)
+
+# Console output frame
+console_frame = ttk.LabelFrame(main_container, text="Console Output", padding="5")
+console_frame.grid(row=2, column=0, columnspan=2, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 5))
+console_frame.grid_columnconfigure(0, weight=1)
+console_frame.grid_rowconfigure(0, weight=1)
+
+console = TextScrollCombo(console_frame)
+console.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+main_container.grid_columnconfigure(0, weight=1)
+main_container.grid_rowconfigure(2, weight=1)
 
 if os.path.exists(output_file_path):
     console.print(f"Found output.txt file.")
