@@ -149,7 +149,10 @@ class Application(tk.Tk):
                        text=f"{self.processed_links.get()}/{self.links_amount}")
 
     def browse_file(self):
-        # Open file dialog to select .wabbajack file
+        """
+        Opens a file dialog to select a Wabbajack mod list file, updates the
+        file path entry box with the selected file's path.
+        """
         filename = filedialog.askopenfilename(filetypes=[("Wabbajack mod list file", "*.wabbajack")])
         if filename:
             self.file_path_entry.delete(0, tk.END)
@@ -176,7 +179,11 @@ class Application(tk.Tk):
     def download_links(self):
         """
         Downloads the URLs from the generator.
-        Opens a batch of URLs in the default web browser and updates progress.
+
+        This function retrieves a batch of URLs from the generator and downloads them
+        using the webbrowser module. The progress bar is updated accordingly.
+
+        If no URLs are available for download, an error message is printed to the console.
         """
         if self.generator is None:
             self.console.print("No URLs to download. Please import URLs from output.txt first.")
@@ -193,8 +200,7 @@ class Application(tk.Tk):
 
     def get_batch(self):
         """
-        Returns the next batch of URLs from the generator.
-        Returns empty list if no more URLs are available.
+        Returns a batch of URLs from the generator.
         """
         try:
             return next(self.generator)
@@ -203,10 +209,12 @@ class Application(tk.Tk):
 
     def extract_file(self):
         """
-        Process the selected .wabbajack file:
-        1. Extract the modlist file from the archive
-        2. Parse the JSON content
-        3. Generate download URLs
+        Extracts the 'modlist' file from the selected Wabbajack zip file and processes its content.
+
+        This function retrieves the file path from the entry box, opens the selected zip file,
+        and extracts the 'modlist' file. The extracted JSON content is then passed to the
+        'extract_url' function for further processing. If any exception occurs during this
+        process, an error message is printed to the console.
         """
         try:
             filename = self.file_path_entry.get()
@@ -220,10 +228,16 @@ class Application(tk.Tk):
 
     def extract_url(self, modlist_file):
         """
-        Process the modlist JSON and generate URLs:
-        1. Extract URLs from Archives section
-        2. Write URLs to output.txt
-        3. Import the generated URLs
+        Extracts the URLs from the given mod list file and writes them to a file.
+
+        This function takes a mod list file as input and generates URLs from it.
+        The generated URLs are then written to a file called 'output.txt',
+        overwriting any existing file. If the output file already exists, the
+        user is asked if they want to overwrite it.
+
+        :param modlist_file: A JSON object representing the content of a Wabbajack
+            mod list file.
+        :type modlist_file: dict
         """
         self.console.print("Generating URLs from JSON data...")
         urls = [url for entry in modlist_file.get("Archives", []) if (url := extract_modlist.generate_url(entry))]
