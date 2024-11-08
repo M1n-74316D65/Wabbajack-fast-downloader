@@ -37,6 +37,6 @@ jobs:
         with:
           body: |
             ${{ github.event.head_commit.message }}
-          draft: false
+          draft: true
           prerelease: false
           files: build/${{ env.FILE_NAME }}.exe
