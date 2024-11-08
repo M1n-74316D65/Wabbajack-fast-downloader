@@ -1,5 +1,6 @@
 import json
 import os
+import time  # Add this import
 import webbrowser
 import zipfile
 import tkinter as tk
@@ -181,9 +182,8 @@ class Application(tk.Tk):
         Downloads the URLs from the generator.
 
         This function retrieves a batch of URLs from the generator and downloads them
-        using the webbrowser module. The progress bar is updated accordingly.
-
-        If no URLs are available for download, an error message is printed to the console.
+        using the webbrowser module. The progress bar is updated accordingly, with a
+        small delay between each link to prevent browser issues.
         """
         if self.generator is None:
             self.console.print("No URLs to download. Please import URLs from output.txt first.")
@@ -193,7 +193,8 @@ class Application(tk.Tk):
             return
         batch_links = self.get_batch()
         for link in batch_links:
-            #webbrowser.open(link)
+            webbrowser.open(link)  # Uncommented this line
+            time.sleep(0.5)  # Add small delay between links
             self.processed_links.set(self.processed_links.get() + 1)
         self.update_progress_bar()
         self.console.print(f"Opened {self.processed_links.get()} out of {self.links_amount} URLs.")
