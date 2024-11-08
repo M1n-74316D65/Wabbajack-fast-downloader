@@ -12,6 +12,7 @@ from tkinter import filedialog, messagebox, ttk
 from extract_modlist import write_urls_to_file
 
 
+# TextScrollCombo: Custom widget that combines Text and Scrollbar
 class TextScrollCombo(tk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -34,6 +35,7 @@ class TextScrollCombo(tk.Frame):
         self.txt.print(text)
 
 
+# ConsoleOutput: Custom Text widget for displaying read-only console output
 class ConsoleOutput(tk.Text):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
@@ -46,6 +48,7 @@ class ConsoleOutput(tk.Text):
         self.config(state="disabled")
 
 
+# Main application window class
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -60,6 +63,7 @@ class Application(tk.Tk):
         self.check_output_file()
 
     def setup_window(self):
+        # Configure the main window properties and styling
         self.title('Wabbajack Fast Downloader')
         self.geometry('500x600')
         self.minsize(450, 500)
@@ -74,6 +78,7 @@ class Application(tk.Tk):
         style.configure('text.Horizontal.TProgressbar', text='0/0', anchor='center')
 
     def create_widgets(self):
+        # Create and organize the main UI container
         self.main_container = ttk.Frame(self, padding="10")
         self.main_container.grid(row=0, column=0, sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
@@ -84,6 +89,8 @@ class Application(tk.Tk):
         self.create_console_section()
 
     def create_file_section(self):
+        # Create the section for mod list file selection
+        # Contains file path entry, browse and extract buttons
         file_frame = ttk.LabelFrame(self.main_container, text="Mod List Selection", padding="5")
         file_frame.grid(row=0, column=0, sticky="ew", pady=(0, 10))
         file_frame.grid_columnconfigure(0, weight=1)
@@ -98,6 +105,8 @@ class Application(tk.Tk):
         extract_btn.grid(row=0, column=2, padx=5)
 
     def create_progress_section(self):
+        # Create the download progress section
+        # Contains progress bar and download button
         progress_frame = ttk.LabelFrame(self.main_container, text="Download Progress", padding="5")
         progress_frame.grid(row=1, column=0, sticky="ew", pady=(0, 10))
         progress_frame.grid_columnconfigure(0, weight=1)
@@ -120,6 +129,8 @@ class Application(tk.Tk):
         download_btn.grid(row=1, column=0, pady=5)
 
     def create_console_section(self):
+        # Create the console output section
+        # Contains scrollable text area for logging
         console_frame = ttk.LabelFrame(self.main_container, text="Console Output", padding="5")
         console_frame.grid(row=2, column=0, sticky="nsew", pady=(0, 5))
         console_frame.grid_columnconfigure(0, weight=1)
@@ -132,22 +143,25 @@ class Application(tk.Tk):
         self.main_container.grid_rowconfigure(2, weight=1)
 
     def update_progress_bar(self):
+        # Update the progress bar text with current progress
         style = ttk.Style()
         style.configure('text.Horizontal.TProgressbar',
                        text=f"{self.processed_links.get()}/{self.links_amount}")
 
     def browse_file(self):
+        # Open file dialog to select .wabbajack file
         filename = filedialog.askopenfilename(filetypes=[("Wabbajack mod list file", "*.wabbajack")])
         if filename:
             self.file_path_entry.delete(0, tk.END)
             self.file_path_entry.insert(tk.END, filename)
 
     def import_links(self):
+        # Import URLs from output.txt and initialize the progress tracking
         self.processed_links.set(0)
         try:
             self.console.print("Importing URLs from output.txt file...")
             self.links_amount = batch_download.count_lines(self.output_file_path)
-            if self.links_amount == 0:
+            if (self.links_amount == 0):
                 self.console.print("No URLs found in output.txt file.")
                 return
             self.generator = batch_download.read_links_in_batches(self.output_file_path, 20)
@@ -162,11 +176,7 @@ class Application(tk.Tk):
     def download_links(self):
         """
         Downloads the URLs from the generator.
-
-        This function retrieves a batch of URLs from the generator and downloads them
-        using the webbrowser module. The progress bar is updated accordingly.
-
-        If no URLs are available for download, an error message is printed to the console.
+        Opens a batch of URLs in the default web browser and updates progress.
         """
         if self.generator is None:
             self.console.print("No URLs to download. Please import URLs from output.txt first.")
@@ -183,7 +193,8 @@ class Application(tk.Tk):
 
     def get_batch(self):
         """
-        Returns a batch of URLs from the generator.
+        Returns the next batch of URLs from the generator.
+        Returns empty list if no more URLs are available.
         """
         try:
             return next(self.generator)
@@ -192,12 +203,10 @@ class Application(tk.Tk):
 
     def extract_file(self):
         """
-        Extracts the 'modlist' file from the selected Wabbajack zip file and processes its content.
-
-        This function retrieves the file path from the entry box, opens the selected zip file,
-        and extracts the 'modlist' file. The extracted JSON content is then passed to the
-        'extract_url' function for further processing. If any exception occurs during this
-        process, an error message is printed to the console.
+        Process the selected .wabbajack file:
+        1. Extract the modlist file from the archive
+        2. Parse the JSON content
+        3. Generate download URLs
         """
         try:
             filename = self.file_path_entry.get()
@@ -211,16 +220,10 @@ class Application(tk.Tk):
 
     def extract_url(self, modlist_file):
         """
-        Extracts the URLs from the given mod list file and writes them to a file.
-
-        This function takes a mod list file as input and generates URLs from it.
-        The generated URLs are then written to a file called 'output.txt',
-        overwriting any existing file. If the output file already exists, the
-        user is asked if they want to overwrite it.
-
-        :param modlist_file: A JSON object representing the content of a Wabbajack
-            mod list file.
-        :type modlist_file: dict
+        Process the modlist JSON and generate URLs:
+        1. Extract URLs from Archives section
+        2. Write URLs to output.txt
+        3. Import the generated URLs
         """
         self.console.print("Generating URLs from JSON data...")
         urls = [url for entry in modlist_file.get("Archives", []) if (url := extract_modlist.generate_url(entry))]
@@ -239,6 +242,7 @@ class Application(tk.Tk):
         self.import_links()
 
     def check_output_file(self):
+        # Check for existing output.txt and import if found
         if os.path.exists(self.output_file_path):
             self.console.print(f"Found output.txt file.")
             self.import_links()
