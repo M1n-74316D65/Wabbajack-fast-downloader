@@ -33,7 +33,6 @@ jobs:
         with:
           python_ver: '3.12'
           spec: 'gui.py'
-          requirements: 'requirements.txt'
           pyinstaller_ver: '==6.3.0'
           exe_path: ./dist
           options: >-
