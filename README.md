@@ -18,7 +18,7 @@
 
 ## Executable Usage | GUI Usage
 
-<img src="https://github.com/user-attachments/assets/63f5b001-f40c-4ae4-81cc-452176a4e5cb" width="400" alt="preview">
+<img src="https://github.com/user-attachments/assets/1146b16e-8112-4d86-a8e3-42ea1c746d16" width="400" alt="preview">
 
 1. Download the executable from [here](https://github.com/M1n-74316D65/Wabbajack-fast-downloader/releases)
 
