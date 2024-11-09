@@ -26,7 +26,6 @@ jobs:
         with:
           python-version: '3.12'
           architecture: 'x64'
-          cache: 'pip'
       
       - name: Build with PyInstaller
         uses: sayyid5416/pyinstaller@v1
