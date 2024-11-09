@@ -42,7 +42,7 @@ jobs:
           upload_exe_with_name: "Wabbajack fast downloader.exe"
         
       - name: ls
-        run: ls -la ./dist
+        run: ls ./dist
       - name: Create and Upload Release
         uses: softprops/action-gh-release@v1
         with:
