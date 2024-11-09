@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*.*.*'
 
+# Prevent concurrent releases
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -15,28 +20,31 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           architecture: 'x64'
-      - name: Build with Nuitka
-        uses: Nuitka/Nuitka-Action@main
+      
+      - name: Build with PyInstaller
+        uses: sayyid5416/pyinstaller@v1
         with:
-          nuitka-version: 'main'
-          script-name: gui.py
-          onefile: 'true'
-          enable-plugins: 'tk-inter'
-          windows-console-mode: 'disable'
-          output-file: ${{ env.FILE_NAME }}.exe
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v2
+          python_ver: '3.12'
+          spec: 'gui.py'
+          pyinstaller_ver: '==6.3.0'
+          exe_path: ./dist
+          options: >-
+            --noconsole,
+            --onefile,
+            --name "Wabbajack fast downloader",
+          compression_level: 0
+          upload_exe_with_name: "Wabbajack fast downloader.exe"
+
+      - name: Create and Upload Release
+        uses: softprops/action-gh-release@v1
         with:
-          body: |
-            ${{ github.event.head_commit.message }}
+          name: Release ${{ github.ref_name }}
+          body: ${{ github.event.head_commit.message }}
           draft: true
-          prerelease: false
-          files: build/${{ env.FILE_NAME }}.exe
+          files: ./dist/Wabbajack fast downloader.exe
