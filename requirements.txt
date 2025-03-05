@@ -1,1 +1,4 @@
 sv-ttk==2
+xxhash
+aiohttp
+aiofiles
